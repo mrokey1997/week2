@@ -4,4 +4,8 @@
     <string name="fashion_style"><![CDATA[Fashion & style]]></string>
     <string name="sports">Sports</string>
     <string name="filter">Filter</string>
+    <string name="date">Begin date:</string>
+    <string name="date_example">03/12/1997</string>
+    <string name="sort_by">Sort by:</string>
+    <string name="new_desk">New desk:</string>
 </resources>

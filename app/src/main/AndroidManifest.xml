@@ -19,6 +19,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".article.FilterActivity"
+            android:theme="@style/Base.Theme.AppCompat.Dialog">
+        </activity>
     </application>
 
 </manifest>

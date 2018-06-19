@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <!--Begin Date -->
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="32dp">
+
+        <TextView
+            android:id="@+id/tv_date_default"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="@string/date"/>
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_marginStart="8dp"
+            android:textSize="16sp"
+            android:textColor="#000000"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/date_example"/>
+
+    </LinearLayout>
+
+    <!-- Sort by -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="32dp">
+
+        <TextView
+            android:id="@+id/tv_sort_by_default"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sort_by"/>
+
+        <Spinner
+            android:id="@+id/spinner_sort_by"
+            android:layout_width="wrap_content"
+            android:entries="@array/sort_array"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="32dp">
+
+        <TextView
+            android:id="@+id/tv_new_desk"
+            android:layout_marginTop="4dp"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/new_desk"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="32dp">
+
+            <CheckBox android:id="@+id/checkbox_arts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/arts" />
+
+            <CheckBox android:id="@+id/checkbox_fashion_style"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/fashion_style" />
+
+            <CheckBox android:id="@+id/checkbox_sports"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/sports" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</LinearLayout>

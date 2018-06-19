@@ -15,25 +15,4 @@
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"/>
 
-    <Spinner
-        android:id="@+id/mySpinner"
-        android:layout_width="wrap_content"
-        android:entries="@array/sort_array"
-        android:layout_height="wrap_content" />
-
-    <CheckBox android:id="@+id/checkbox_arts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/arts" />
-
-    <CheckBox android:id="@+id/checkbox_fashion_style"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/fashion_style" />
-
-    <CheckBox android:id="@+id/checkbox_sports"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/sports" />
-
 </LinearLayout>
