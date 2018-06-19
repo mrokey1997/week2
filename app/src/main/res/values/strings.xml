@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">week2</string>
+    <string name="app_name">Article</string>
+    <string name="arts">Arts</string>
+    <string name="fashion_style"><![CDATA[Fashion & style]]></string>
+    <string name="sports">Sports</string>
+    <string name="filter">Filter</string>
 </resources>
