@@ -20,15 +20,14 @@
             android:textSize="16sp"
             android:text="@string/date"/>
 
-        <TextView
-            android:id="@+id/tv_date"
+        <EditText
+            android:focusable="false"
+            android:id="@+id/edt_date"
+            android:gravity="center"
             android:layout_marginStart="8dp"
             android:textSize="16sp"
-            android:textColor="#000000"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/date_example"/>
-
+            android:layout_width="111dp"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <!-- Sort by -->
@@ -93,7 +92,14 @@
 
         </LinearLayout>
 
-
     </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/save"
+        android:layout_gravity="center"
+        android:layout_marginBottom="32dp"/>
 
 </LinearLayout>

@@ -49,6 +49,14 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
     /**
+     *  Glide
+     *  https://github.com/bumptech/glide
+     *  https://github.com/wasabeef/glide-transformations
+     */
+    implementation 'com.github.bumptech.glide:glide:4.7.1'
+    implementation 'jp.wasabeef:glide-transformations:3.3.0'
+
+    /**
      * Default
      */
     implementation fileTree(dir: 'libs', include: ['*.jar'])

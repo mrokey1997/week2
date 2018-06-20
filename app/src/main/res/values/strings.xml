@@ -8,4 +8,7 @@
     <string name="date_example">03/12/1997</string>
     <string name="sort_by">Sort by:</string>
     <string name="new_desk">New desk:</string>
+    <string name="save">Save</string>
+    <string name="slash">/</string>
+    <string name="title">Title</string>
 </resources>

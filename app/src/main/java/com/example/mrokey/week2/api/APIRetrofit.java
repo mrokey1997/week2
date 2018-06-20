@@ -14,7 +14,7 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class APIRetrofit {
-    private static final String BASE_URL = "";
+    private static final String BASE_URL = "https://api.nytimes.com/svc/search/v2/";
 
     private static Retrofit builder() {
         return new Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
