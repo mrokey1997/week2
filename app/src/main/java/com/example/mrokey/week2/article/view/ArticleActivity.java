@@ -1,11 +1,13 @@
-package com.example.mrokey.week2.article;
+package com.example.mrokey.week2.article.view;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -16,12 +18,12 @@ import com.example.mrokey.week2.adapter.ArticleAdapter;
 import com.example.mrokey.week2.adapter.ItemClickListener;
 import com.example.mrokey.week2.api.APILink;
 import com.example.mrokey.week2.api.APIRetrofit;
+import com.example.mrokey.week2.article.FilterActivity;
 import com.example.mrokey.week2.model.Artical;
 import com.example.mrokey.week2.model.Doc;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+    import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -29,7 +31,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class ArticleActivity extends AppCompatActivity {
 
     @BindView(R.id.toolbar)
     Toolbar toolbar;
@@ -65,6 +67,14 @@ public class MainActivity extends AppCompatActivity {
         getArticleSearch();
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        SharedPreferences.Editor editor = getSharedPreferences("saved_data", MODE_PRIVATE).edit();
+        editor.putString("query", "");
+        editor.apply();
+    }
+
     private void init() {
         list_docs = new ArrayList<>();
 
@@ -76,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initArticleAdapter() {
-        articleAdapter = new ArticleAdapter(MainActivity.this);
+        articleAdapter = new ArticleAdapter(ArticleActivity.this);
         articleAdapter.setData(list_docs);
         articleAdapter.setItemClickListener(new ItemClickListener() {
             @Override
@@ -100,8 +110,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.miFilter: {
-                Intent intent = new Intent(MainActivity.this, FilterActivity.class);
+                Intent intent = new Intent(ArticleActivity.this, FilterActivity.class);
                 startActivity(intent);
+                break;
             }
         }
         return super.onOptionsItemSelected(item);
@@ -110,6 +121,29 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.miSearch);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                SharedPreferences.Editor editor = getSharedPreferences("saved_data", MODE_PRIVATE).edit();
+                editor.putString("query", query);
+                editor.apply();
+                getArticleSearch();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                SharedPreferences.Editor editor = getSharedPreferences("saved_data", MODE_PRIVATE).edit();
+                editor.putString("query", newText);
+                editor.apply();
+                getArticleSearch();
+                return false;
+            }
+        });
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -121,52 +155,56 @@ public class MainActivity extends AppCompatActivity {
         if (!begin_date.equals("fail"))
             isBegin_date = true;
 
-
         String sort = reader.getString("spinner", "newest");
 
         String fq = "";
 
-        boolean isNoCheckbox = true;
+        boolean isFQ = false;
 
         String checkbox_arts = reader.getString("checkbox_arts", "false");
         boolean isCheckbox_arts = false;
         if (!checkbox_arts.equals("false")) {
             isCheckbox_arts = true;
-            isNoCheckbox = false;
+            isFQ = true;
         }
 
         String checkbox_fashion_style = reader.getString("checkbox_fashion_style", "false");
         boolean isCheckbox_fashion_style = false;
         if (!checkbox_fashion_style.equals("false")) {
             isCheckbox_fashion_style = true;
-            isNoCheckbox = false;
+            isFQ = true;
         }
 
         String checkbox_sports = reader.getString("checkbox_sports", "false");
         boolean isCheckbox_sports = false;
         if (!checkbox_sports.equals("false")) {
             isCheckbox_sports = true;
-            isNoCheckbox = false;
+            isFQ = true;
+        }
+
+        String query = reader.getString("query", "");
+        boolean isQuery = false;
+        if (!query.equals("")) {
+            isQuery = true;
+            isFQ = true;
         }
 
         if (isCheckbox_arts) fq += ARTS;
         if (isCheckbox_fashion_style) fq += FASHION_AND_STYLE;
         if (isCheckbox_sports) fq += SPORTS;
+        if (isQuery) fq += query;
         fq = "news_desk:(" + fq + ")";
 
-        if (isBegin_date && !isNoCheckbox)
+        if (isBegin_date && isFQ)
             return apiLink.getArticleSearch(begin_date, sort, fq);
-        else if (isBegin_date && isNoCheckbox)
+        else if (isBegin_date && !isFQ)
             return apiLink.getArticleByBeginDateAndSort(begin_date, sort);
-        else if (!isBegin_date && !isNoCheckbox)
+        else if (!isBegin_date && isFQ)
             return apiLink.getArticleBySortAndFQ(sort, fq);
         else return apiLink.getArticleBySort(sort);
     }
 
-
-
     public void getArticleSearch() {
-
         apiLink = APIRetrofit.createService();
         getCall().enqueue(new Callback<Artical>() {
             @Override
@@ -174,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
                 if (response.body() != null) {
                     if (response.body().getResponse().getDocs() != null) {
                         articleAdapter.setData(response.body().getResponse().getDocs());
-                        Log.d("Response", "Success");
+                        Log.d("Response", response.toString());
                         Log.d("Response", response.body().getResponse().getDocs().size() + "");
                     }
                     else Log.d("Response", "Success but getDocs is null");
