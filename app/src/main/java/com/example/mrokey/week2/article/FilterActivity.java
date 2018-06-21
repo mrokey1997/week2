@@ -44,6 +44,8 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
     @BindView(R.id.spinner_sort_by)
     Spinner spinner_sort_by;
 
+    Calendar calendar;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,13 +53,18 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
 
         ButterKnife.bind(this);
 
+        initCalender();
+
         spinner_sort_by.setOnItemSelectedListener(this);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        saveSharePreferences();
+    @SuppressLint("SetTextI18n")
+    private void initCalender() {
+        calendar = Calendar.getInstance();
+
+        edt_date.setText(calendar.get(Calendar.YEAR) + "/"
+                + formatDate(calendar.get(Calendar.MONTH)) + "/"
+                + formatDate(calendar.get(Calendar.DAY_OF_MONTH)));
     }
 
     @Override
@@ -68,19 +75,29 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
 
     private void restoreSharePreferences() {
         SharedPreferences reader = getSharedPreferences("saved_data", MODE_PRIVATE);
-        if (reader.getString("checkbox_arts", "fail") == "true")
+
+        if (reader.getString("checkbox_arts", "fail").equals("true"))
             checkbox_arts.setChecked(true);
-        if (reader.getString("checkbox_fashion_style", "fail") == "true")
+        if (reader.getString("checkbox_fashion_style", "fail").equals("true"))
             checkbox_fashion_style.setChecked(true);
-        if (reader.getString("checkbox_sports", "fail") == "true")
+        if (reader.getString("checkbox_sports", "fail").equals("true"))
             checkbox_sports.setChecked(true);
-        if (reader.getString("formatted_begin_date","fail") != "fail")
+        if (!reader.getString("formatted_begin_date", "fail").equals("fail"))
             edt_date.setText(reader.getString("formatted_begin_date", "error"));
+
+        String year = reader.getString("year", "fail");
+        if (!year.equals("fail"))
+            calendar.set(Calendar.YEAR, Integer.valueOf(year));
+        String month = reader.getString("month", "fail");
+        if (!month.equals("fail"))
+            calendar.set(Calendar.MONTH, Integer.valueOf(month));
+        String day = reader.getString("day", "fail");
+        if (!month.equals("fail"))
+            calendar.set(Calendar.DAY_OF_MONTH, Integer.valueOf(day));
     }
 
     private void saveSharePreferences() {
         SharedPreferences.Editor editor = getSharedPreferences("saved_data", MODE_PRIVATE).edit();
-        editor.clear();
         if (checkbox_arts.isChecked())
             editor.putString("checkbox_arts", "true");
         else editor.putString("checkbox_arts", "false");
@@ -90,7 +107,20 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
         if (checkbox_sports.isChecked())
             editor.putString("checkbox_sports", "true");
         else editor.putString("checkbox_sports", "false");
+
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        String formattedDay = day >= 10 ? day + "" : "0" + day;
+        String formattedMonth = month >= 10 ? month + "" : "0" + month;
+
+        editor.putString("begin_date", year+formattedMonth+formattedDay+"");
+        editor.putString("formatted_begin_date", edt_date.getText().toString());
+
         editor.apply();
+
+        finish();
     }
 
     @OnClick(R.id.edt_date)
@@ -100,6 +130,7 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
 
     @OnClick(R.id.btn_save)
     public void onClickSaveBtn() {
+        saveSharePreferences();
         Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
     }
 
@@ -111,14 +142,21 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
     @SuppressLint("SetTextI18n")
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-        edt_date.setText(year + "//" + month + "//" + day);
-        String formatedDay = day >= 10 ? day + "" : "0" + day;
-        String formatedMonth = month >= 10 ? month + "" : "0" + month;
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, month);
+        calendar.set(Calendar.DAY_OF_MONTH, day);
 
         SharedPreferences.Editor editor = getSharedPreferences("saved_data", MODE_PRIVATE).edit();
-        editor.putString("begin_date", year+formatedMonth+formatedDay+"");
-        editor.putString("formatted_begin_date", edt_date.getText().toString());
+        editor.putString("year", year+"");
+        editor.putString("month", month+"");
+        editor.putString("day", day+"");
         editor.apply();
+
+        edt_date.setText(year + "/" + formatDate(month) + "/" + formatDate(day));
+    }
+
+    public String formatDate(int i) {
+        return i >= 10 ? i + "" : "0" + i;
     }
 
     @Override

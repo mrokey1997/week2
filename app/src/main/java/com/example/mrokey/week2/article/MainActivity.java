@@ -1,6 +1,7 @@
 package com.example.mrokey.week2.article;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -19,6 +20,7 @@ import com.example.mrokey.week2.model.Artical;
 import com.example.mrokey.week2.model.Doc;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -41,6 +43,10 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.recycler_view_article)
     RecyclerView recycler_view;
 
+    final String ARTS = "\"Arts\"";
+    final String FASHION_AND_STYLE = "\"Fashion & Style\"";
+    final String SPORTS = "\"Sports\"";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,10 +55,14 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         setupToolbar();
-
-        getArticleSearch();
         
         init();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getArticleSearch();
     }
 
     private void init() {
@@ -103,9 +113,62 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
+    public Call<Artical> getCall() {
+        SharedPreferences reader = getSharedPreferences("saved_data", MODE_PRIVATE);
+
+        String begin_date = reader.getString("begin_date", "fail");
+        boolean isBegin_date = false;
+        if (!begin_date.equals("fail"))
+            isBegin_date = true;
+
+
+        String sort = reader.getString("spinner", "newest");
+
+        String fq = "";
+
+        boolean isNoCheckbox = true;
+
+        String checkbox_arts = reader.getString("checkbox_arts", "false");
+        boolean isCheckbox_arts = false;
+        if (!checkbox_arts.equals("false")) {
+            isCheckbox_arts = true;
+            isNoCheckbox = false;
+        }
+
+        String checkbox_fashion_style = reader.getString("checkbox_fashion_style", "false");
+        boolean isCheckbox_fashion_style = false;
+        if (!checkbox_fashion_style.equals("false")) {
+            isCheckbox_fashion_style = true;
+            isNoCheckbox = false;
+        }
+
+        String checkbox_sports = reader.getString("checkbox_sports", "false");
+        boolean isCheckbox_sports = false;
+        if (!checkbox_sports.equals("false")) {
+            isCheckbox_sports = true;
+            isNoCheckbox = false;
+        }
+
+        if (isCheckbox_arts) fq += ARTS;
+        if (isCheckbox_fashion_style) fq += FASHION_AND_STYLE;
+        if (isCheckbox_sports) fq += SPORTS;
+        fq = "news_desk:(" + fq + ")";
+
+        if (isBegin_date && !isNoCheckbox)
+            return apiLink.getArticleSearch(begin_date, sort, fq);
+        else if (isBegin_date && isNoCheckbox)
+            return apiLink.getArticleByBeginDateAndSort(begin_date, sort);
+        else if (!isBegin_date && !isNoCheckbox)
+            return apiLink.getArticleBySortAndFQ(sort, fq);
+        else return apiLink.getArticleBySort(sort);
+    }
+
+
+
     public void getArticleSearch() {
+
         apiLink = APIRetrofit.createService();
-        apiLink.getArticleSearch("20160112", "oldest", "news_desk:(\"Education\"%20\"Health\")").enqueue(new Callback<Artical>() {
+        getCall().enqueue(new Callback<Artical>() {
             @Override
             public void onResponse(Call<Artical> call, Response<Artical> response) {
                 if (response.body() != null) {

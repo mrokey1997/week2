@@ -8,13 +8,7 @@ import retrofit2.http.Query;
 
 public interface APILink {
     @GET("articlesearch.json")
-    Call<Artical> getArticleByBeginDate(@Query("begin_date") String begin_date);
-
-    @GET("articlesearch.json")
     Call<Artical> getArticleBySort(@Query("sort") String sort);
-
-    @GET("articlesearch.json")
-    Call<Artical> getArticleByFQ(@Query("fq") String fq);
 
     @GET("articlesearch.json")
     Call<Artical> getArticleByBeginDateAndSort(@Query("begin_date") String begin_date, @Query("sort") String sort);
