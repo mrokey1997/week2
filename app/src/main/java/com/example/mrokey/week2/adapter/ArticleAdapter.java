@@ -14,6 +14,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.mrokey.week2.R;
 import com.example.mrokey.week2.model.Doc;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHolder> {
@@ -22,6 +23,7 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
     private ItemClickListener itemClickListener;
 
     public ArticleAdapter(Context context) {
+        docs = new ArrayList<>();
         this.context = context;
     }
 
