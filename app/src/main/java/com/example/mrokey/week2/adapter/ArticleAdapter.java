@@ -28,7 +28,9 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
     }
 
     public void setData(List<Doc> docs) {
-        this.docs = docs;
+        if (getItemCount() == 0)
+            this.docs = docs;
+        else this.docs.addAll(docs);
         notifyDataSetChanged();
     }
 

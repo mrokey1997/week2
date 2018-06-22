@@ -10,4 +10,6 @@ public interface DataListener {
     void onResponse(List<Doc> docs);
 
     void onFailure(String error);
+
+    void onClickItem(CustomTabsIntent customTabsIntent, String url);
 }

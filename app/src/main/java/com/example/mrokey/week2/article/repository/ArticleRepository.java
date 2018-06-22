@@ -28,15 +28,51 @@ import static android.content.Context.MODE_PRIVATE;
 public class ArticleRepository implements IArticleRepository {
     private APILink apiLink;
     private Context context;
+    private ArticleAdapter articleAdapter;
 
     public ArticleRepository(Context context, ArticleAdapter articleAdapter) {
         this.context = context;
+        this.articleAdapter = articleAdapter;
         apiLink = APIRetrofit.createService();
     }
 
+    /**
+     * Initialize data when click on an item of RecyclerView
+     * @param dataListener ...
+     */
     @Override
-    public void getArticleSearch(final DataListener dataListener) {
-        getCall().enqueue(new Callback<Artical>() {
+    public void getArticle(final DataListener dataListener) {
+        articleAdapter.setItemClickListener(new ItemClickListener() {
+            @Override
+            public void onClickItem(Doc doc) {
+                String url = doc.getWebUrl();
+
+                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_share);
+
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT, url);
+
+                int requestCode = 100;
+                PendingIntent pendingIntent = PendingIntent.getActivity(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+                builder.setActionButton(bitmap, "Share this article", pendingIntent, true);
+                CustomTabsIntent customTabsIntent = builder.build();
+
+                dataListener.onClickItem(customTabsIntent, url);
+            }
+        });
+    }
+
+    /**
+     * Call API
+     * @param dataListener ...
+     * @param page ...
+     */
+    @Override
+    public void getListArticle(final DataListener dataListener, int page) {
+        getCall(page).enqueue(new Callback<Artical>() {
             @Override
             public void onResponse(Call<Artical> call, Response<Artical> response) {
                 if (response.body() != null) {
@@ -54,14 +90,15 @@ public class ArticleRepository implements IArticleRepository {
         });
     }
 
+
     /**
-     * Save state of filter
+     * Read state of filter
      * @return function call API
      */
-    private Call<Artical> getCall() {
-        String ARTS = "\"Arts\"";
-        String FASHION_AND_STYLE = "\"Fashion & Style\"";
-        String SPORTS = "\"Sports\"";
+    private Call<Artical> getCall(int page) {
+        final String ARTS = "\"Arts\"";
+        final String FASHION_AND_STYLE = "\"Fashion & Style\"";
+        final String SPORTS = "\"Sports\"";
 
         SharedPreferences reader = context.getSharedPreferences("saved_data", MODE_PRIVATE);
 
@@ -98,24 +135,19 @@ public class ArticleRepository implements IArticleRepository {
         }
 
         String query = reader.getString("query", "");
-        boolean isQuery = false;
-        if (!query.equals("")) {
-            isQuery = true;
-            isFQ = true;
-        }
 
         if (isCheckbox_arts) fq += ARTS;
         if (isCheckbox_fashion_style) fq += FASHION_AND_STYLE;
         if (isCheckbox_sports) fq += SPORTS;
-        if (isQuery) fq += query;
+
         fq = "news_desk:(" + fq + ")";
 
         if (isBegin_date && isFQ)
-            return apiLink.getArticleSearch(begin_date, sort, fq);
+            return apiLink.getArticleByBeginDateAndFQ(sort, begin_date, fq, query, page);
         else if (isBegin_date && !isFQ)
-            return apiLink.getArticleByBeginDateAndSort(begin_date, sort);
+            return apiLink.getArticleByBeginDate(sort, begin_date, query, page);
         else if (!isBegin_date && isFQ)
-            return apiLink.getArticleBySortAndFQ(sort, fq);
-        else return apiLink.getArticleBySort(sort);
+            return apiLink.getArticleByFQ(sort, fq, query, page);
+        else return apiLink.getArticleBySort(sort, query, page);
     }
 }

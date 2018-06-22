@@ -9,8 +9,7 @@ public interface IListArticleActivity {
 
     void hideLoading();
 
-    void showListArticle(List<Doc> docs);
+    void setDataArticleAdapter(List<Doc> docs);
 
     void showNotifyError();
-
 }

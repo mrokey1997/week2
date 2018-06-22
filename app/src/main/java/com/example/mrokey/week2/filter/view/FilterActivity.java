@@ -118,6 +118,8 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
         editor.putString("begin_date", year+formattedMonth+formattedDay+"");
         editor.putString("formatted_begin_date", edt_date.getText().toString());
 
+        editor.putString("just_filter", "true");
+
         editor.apply();
 
         finish();

@@ -1,9 +1,17 @@
 package com.example.mrokey.week2.article.presenter;
 
-import com.example.mrokey.week2.model.Doc;
-
 public interface IListArticlePresenter {
-    void getListArticle();
+    void getListArticle(int page);
 
-    void getArticle(Doc doc);
+    void getArticle();
+
+    void onQueryTextSubmit(String query);
+
+    void onQueryTextChange(String newText);
+
+    void clearSearchQueryInLocalData();
+
+    boolean isJustFilter();
+
+    void setJustFilterFalse();
 }
