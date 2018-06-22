@@ -57,6 +57,12 @@ dependencies {
     implementation 'jp.wasabeef:glide-transformations:3.3.0'
 
     /**
+     * Chrome Custom Tab
+     * https://guides.codepath.com/android/Chrome-Custom-Tabs
+     */
+    implementation 'com.android.support:customtabs:27.1.1'
+
+    /**
      * Default
      */
     implementation fileTree(dir: 'libs', include: ['*.jar'])

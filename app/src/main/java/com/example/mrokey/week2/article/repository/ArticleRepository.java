@@ -1,12 +1,23 @@
 package com.example.mrokey.week2.article.repository;
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.support.customtabs.CustomTabsIntent;
 import android.util.Log;
 
+import com.example.mrokey.week2.R;
+import com.example.mrokey.week2.adapter.ArticleAdapter;
+import com.example.mrokey.week2.adapter.ItemClickListener;
 import com.example.mrokey.week2.api.APILink;
 import com.example.mrokey.week2.api.APIRetrofit;
+import com.example.mrokey.week2.article.view.ListArticleActivity;
 import com.example.mrokey.week2.model.Artical;
+import com.example.mrokey.week2.model.Doc;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -18,11 +29,10 @@ public class ArticleRepository implements IArticleRepository {
     private APILink apiLink;
     private Context context;
 
-    public ArticleRepository(Context context) {
+    public ArticleRepository(Context context, ArticleAdapter articleAdapter) {
         this.context = context;
         apiLink = APIRetrofit.createService();
     }
-
 
     @Override
     public void getArticleSearch(final DataListener dataListener) {

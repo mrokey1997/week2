@@ -1,7 +1,12 @@
 package com.example.mrokey.week2.article.view;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,7 +23,7 @@ import android.widget.Toast;
 import com.example.mrokey.week2.R;
 import com.example.mrokey.week2.adapter.ArticleAdapter;
 import com.example.mrokey.week2.adapter.ItemClickListener;
-import com.example.mrokey.week2.article.FilterActivity;
+import com.example.mrokey.week2.filter.view.FilterActivity;
 import com.example.mrokey.week2.article.presenter.IListArticlePresenter;
 import com.example.mrokey.week2.article.presenter.ListArticlePresenter;
 import com.example.mrokey.week2.article.repository.ArticleRepository;
@@ -41,6 +46,8 @@ public class ListArticleActivity extends AppCompatActivity implements IListArtic
 
     IListArticlePresenter listArticlePresenter;
 
+
+
     @BindView(R.id.recycler_view_article)
     RecyclerView recycler_view;
 
@@ -56,10 +63,8 @@ public class ListArticleActivity extends AppCompatActivity implements IListArtic
 
         init();
 
-        IArticleRepository articleRepository = new ArticleRepository(this);
-        listArticlePresenter = new ListArticlePresenter(this, articleRepository);
-
-        listArticlePresenter.getListArticle();
+        IArticleRepository articleRepository = new ArticleRepository(this, articleAdapter);
+        listArticlePresenter = new ListArticlePresenter(this,this, articleRepository);
 
         setupToolbar();
     }
@@ -91,7 +96,7 @@ public class ListArticleActivity extends AppCompatActivity implements IListArtic
         articleAdapter.setItemClickListener(new ItemClickListener() {
             @Override
             public void onClickItem(Doc doc) {
-
+                listArticlePresenter.getArticle(doc);
             }
         });
     }
@@ -130,7 +135,7 @@ public class ListArticleActivity extends AppCompatActivity implements IListArtic
                 SharedPreferences.Editor editor = getSharedPreferences("saved_data", MODE_PRIVATE).edit();
                 editor.putString("query", query);
                 editor.apply();
-                //getArticleSearch();
+                listArticlePresenter.getListArticle();
                 return false;
             }
 
@@ -139,7 +144,7 @@ public class ListArticleActivity extends AppCompatActivity implements IListArtic
                 SharedPreferences.Editor editor = getSharedPreferences("saved_data", MODE_PRIVATE).edit();
                 editor.putString("query", newText);
                 editor.apply();
-                //getArticleSearch();
+                listArticlePresenter.getListArticle();
                 return false;
             }
         });

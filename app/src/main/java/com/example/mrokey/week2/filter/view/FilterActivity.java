@@ -1,4 +1,4 @@
-package com.example.mrokey.week2.article;
+package com.example.mrokey.week2.filter.view;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;

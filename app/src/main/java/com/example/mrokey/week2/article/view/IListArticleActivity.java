@@ -12,4 +12,5 @@ public interface IListArticleActivity {
     void showListArticle(List<Doc> docs);
 
     void showNotifyError();
+
 }
