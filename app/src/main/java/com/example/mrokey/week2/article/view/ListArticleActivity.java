@@ -1,12 +1,6 @@
 package com.example.mrokey.week2.article.view;
 
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.support.customtabs.CustomTabsIntent;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -59,7 +53,7 @@ public class ListArticleActivity extends AppCompatActivity implements IListArtic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //showDatePickerDialog();
+
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);

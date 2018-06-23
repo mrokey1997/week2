@@ -1,15 +1,10 @@
 package com.example.mrokey.week2.article.presenter;
 
-import android.app.PendingIntent;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.customtabs.CustomTabsIntent;
 
-import com.example.mrokey.week2.R;
 import com.example.mrokey.week2.article.repository.DataListener;
 import com.example.mrokey.week2.article.repository.IArticleRepository;
 import com.example.mrokey.week2.article.view.IListArticleActivity;

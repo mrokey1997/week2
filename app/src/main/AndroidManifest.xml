@@ -21,7 +21,8 @@
         </activity>
 
         <activity android:name=".filter.view.FilterActivity"
-            android:theme="@style/Base.Theme.AppCompat.Dialog">
+            android:theme="@style/Base.Theme.AppCompat.Dialog"
+            android:label="Filter">
         </activity>
     </application>
 

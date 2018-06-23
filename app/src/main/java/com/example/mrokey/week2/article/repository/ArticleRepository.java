@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.support.customtabs.CustomTabsIntent;
 import android.util.Log;
 
@@ -15,7 +14,6 @@ import com.example.mrokey.week2.adapter.ArticleAdapter;
 import com.example.mrokey.week2.adapter.ItemClickListener;
 import com.example.mrokey.week2.api.APILink;
 import com.example.mrokey.week2.api.APIRetrofit;
-import com.example.mrokey.week2.article.view.ListArticleActivity;
 import com.example.mrokey.week2.model.Artical;
 import com.example.mrokey.week2.model.Doc;
 
@@ -92,7 +90,7 @@ public class ArticleRepository implements IArticleRepository {
 
 
     /**
-     * Read state of filter
+     * Read state of filter from local data
      * @return function call API
      */
     private Call<Artical> getCall(int page) {

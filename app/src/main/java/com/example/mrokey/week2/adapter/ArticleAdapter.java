@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.mrokey.week2.R;
 import com.example.mrokey.week2.model.Doc;
+import com.example.mrokey.week2.model.Multimedium;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,10 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
         this.context = context;
     }
 
+    /**
+     * Set data
+     * @param docs list of doc
+     */
     public void setData(List<Doc> docs) {
         if (getItemCount() == 0)
             this.docs = docs;
@@ -34,6 +39,9 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
         notifyDataSetChanged();
     }
 
+    /**
+     * Clear all data
+     */
     public void clearData() {
         docs.clear();
         notifyDataSetChanged();
@@ -56,11 +64,33 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ViewHold
         Doc doc = docs.get(i);
         Glide.with(context)
                 .setDefaultRequestOptions(new RequestOptions().placeholder(R.drawable.placeholder))
-                .load(doc.getMultimedia().size() == 0 ? "" : doc.getMultimedia().get(0).getUrl())
+                .load(getImageURL(doc))
                 .into(viewHolder.img_cover);
         viewHolder.tv_title.setText(doc.getHeadline().getMain());
     }
 
+    /**
+     * Get Image URL
+     * @param doc ...
+     * @return url
+     */
+    private String getImageURL(Doc doc) {
+        int size = doc.getMultimedia().size();
+        if (size == 0) return "";
+        for (int i = 0; i < size; i++) {
+            String subtype = doc.getMultimedia().get(i).getSubtype();
+            if (subtype.equals("xlarge"))
+                return doc.getMultimedia().get(i).getUrl();
+            else if (subtype.equals("hpLarge"))
+                return doc.getMultimedia().get(i).getUrl();
+        }
+        return doc.getMultimedia().get(0).getUrl();
+    }
+
+    /**
+     * Get number of item
+     * @return number of item
+     */
     @Override
     public int getItemCount() {
         return docs.size();

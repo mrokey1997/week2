@@ -8,10 +8,10 @@
 
     <ImageView
         android:id="@+id/img_cover"
-        android:layout_margin="8dp"
-        android:src="@drawable/sample"
+        android:layout_margin="4dp"
+        android:src="@drawable/example"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="170dp"
         android:scaleType="centerCrop"/>
 
     <TextView
@@ -22,10 +22,9 @@
         android:text="@string/title"
         android:textColor="#FFFFFF"
         android:textSize="24sp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginRight="32dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="16dp"
         app:layout_constraintBottom_toBottomOf="@+id/img_cover"
         app:layout_constraintStart_toStartOf="@+id/img_cover" />
-
 
 </android.support.constraint.ConstraintLayout>

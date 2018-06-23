@@ -121,8 +121,6 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
         editor.putString("just_filter", "true");
 
         editor.apply();
-
-        finish();
     }
 
     @OnClick(R.id.edt_date)
@@ -134,6 +132,12 @@ public class FilterActivity extends AppCompatActivity implements DatePickerDialo
     public void onClickSaveBtn() {
         saveSharePreferences();
         Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    @OnClick(R.id.btn_close)
+    public void onClickCloseBtn() {
+        finish();
     }
 
     public void showDatePickerDialog() {
