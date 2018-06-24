@@ -12,4 +12,6 @@ public interface DataListener {
     void onFailure(String error);
 
     void onClickItem(CustomTabsIntent customTabsIntent, String url);
+
+    void onTryAngain();
 }

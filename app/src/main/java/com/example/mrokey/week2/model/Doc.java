@@ -126,7 +126,7 @@ public class Doc {
     }
 
     public String getPubDate() {
-        return pubDate;
+        return pubDate.split("T")[0];
     }
 
     public void setPubDate(String pubDate) {

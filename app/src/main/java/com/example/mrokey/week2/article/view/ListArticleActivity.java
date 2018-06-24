@@ -2,6 +2,7 @@ package com.example.mrokey.week2.article.view;
 
 import android.content.Intent;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -22,7 +23,9 @@ import com.example.mrokey.week2.article.presenter.IListArticlePresenter;
 import com.example.mrokey.week2.article.presenter.ListArticlePresenter;
 import com.example.mrokey.week2.article.repository.ArticleRepository;
 import com.example.mrokey.week2.article.repository.IArticleRepository;
+import com.example.mrokey.week2.fragment.NoInternetConnectionDialog;
 import com.example.mrokey.week2.model.Doc;
+import com.example.mrokey.week2.util.NetworkUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +44,9 @@ public class ListArticleActivity extends AppCompatActivity implements IListArtic
     @BindView(R.id.progress_bar)
     ProgressBar progress_bar;
 
+    @BindView(R.id.swipe_refresh_layout)
+    SwipeRefreshLayout swipe_refresh_layout;
+
     ArticleAdapter articleAdapter;
 
     IListArticlePresenter listArticlePresenter;
@@ -48,6 +54,7 @@ public class ListArticleActivity extends AppCompatActivity implements IListArtic
     EndlessRecyclerViewScrollListener scrollListener;
 
     List<Doc> list_doc;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +68,8 @@ public class ListArticleActivity extends AppCompatActivity implements IListArtic
         list_doc = new ArrayList<>();
         articleAdapter = new ArticleAdapter(this);
         initRecyclerView();
+
+        initSwipeRefreshLayout();
 
         IArticleRepository articleRepository = new ArticleRepository(this, articleAdapter);
         listArticlePresenter = new ListArticlePresenter(this,this, articleRepository);
@@ -76,13 +85,7 @@ public class ListArticleActivity extends AppCompatActivity implements IListArtic
     @Override
     protected void onResume() {
         super.onResume();
-        showListArticleFilter();
-    }
-
-    /**
-     * list articles after use filter
-     */
-    private void showListArticleFilter() {
+        /* If just use filter then API will be call again*/
         if (listArticlePresenter.isJustFilter()) {
             articleAdapter.clearData();
             scrollListener.resetState();
@@ -94,7 +97,22 @@ public class ListArticleActivity extends AppCompatActivity implements IListArtic
     @Override
     protected void onStop() {
         super.onStop();
+        /*Clear search query in local data when close app*/
         listArticlePresenter.clearSearchQueryInLocalData();
+    }
+
+    /**
+     * Initialize SwipeRefreshLayout
+     */
+    private void initSwipeRefreshLayout() {
+        swipe_refresh_layout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                articleAdapter.clearData();
+                listArticlePresenter.getListArticle(1);
+                swipe_refresh_layout.setRefreshing(false);
+            }
+        });
     }
 
     /**
@@ -109,7 +127,6 @@ public class ListArticleActivity extends AppCompatActivity implements IListArtic
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                Log.d("Pageeeee", page+"");
                 listArticlePresenter.getListArticle(page + 1);
             }
         };
@@ -117,7 +134,7 @@ public class ListArticleActivity extends AppCompatActivity implements IListArtic
     }
 
     /**
-     * Handle event when click item on toolbar
+     * Open filter when click filter item on toolbar
      * @param item item
      * @return ...
      */

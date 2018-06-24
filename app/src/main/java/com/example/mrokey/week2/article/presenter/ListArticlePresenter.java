@@ -8,7 +8,9 @@ import android.support.customtabs.CustomTabsIntent;
 import com.example.mrokey.week2.article.repository.DataListener;
 import com.example.mrokey.week2.article.repository.IArticleRepository;
 import com.example.mrokey.week2.article.view.IListArticleActivity;
+import com.example.mrokey.week2.fragment.NoInternetConnectionDialog;
 import com.example.mrokey.week2.model.Doc;
+import com.example.mrokey.week2.util.NetworkUtils;
 
 import java.util.List;
 
@@ -105,7 +107,9 @@ public class ListArticlePresenter implements IListArticlePresenter, DataListener
     @Override
     public void onFailure(String error) {
         mView.hideLoading();
-        mView.showNotifyError();
+        if (!NetworkUtils.isOnline(context))
+            NoInternetConnectionDialog.show(context, this);
+        else mView.showNotifyError();
     }
 
     /**
@@ -116,5 +120,10 @@ public class ListArticlePresenter implements IListArticlePresenter, DataListener
     @Override
     public void onClickItem(CustomTabsIntent customTabsIntent, String url) {
         customTabsIntent.launchUrl(context, Uri.parse(url));
+    }
+
+    @Override
+    public void onTryAngain() {
+        getListArticle(1);
     }
 }

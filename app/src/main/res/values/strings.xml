@@ -12,4 +12,9 @@
     <string name="slash">/</string>
     <string name="title">Title</string>
     <string name="search">Search</string>
+    <string name="education">Education</string>
+    <string name="publish_date">2016–01–14</string>
+    <string name="connection_failed">Connection failed</string>
+    <string name="no_internet">Hmm, no internet connection.</string>
+    <string name="try_again">Try again</string>
 </resources>
