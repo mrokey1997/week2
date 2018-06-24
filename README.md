@@ -13,8 +13,8 @@ The following **required** functionality is completed:
 	- An example of a query with filters (begin_date, sort, and news_desk) applied [can be found here](https://api.nytimes.com/svc/search/v2/articlesearch.json?begin_date=20160112&sort=oldest&fq=news_desk:(%22Education%22%20%22Health%22)&api-key=227c750bb7714fc39ef1559ef1bd8329). Full details of the API can be found [on this article search README](https://developer.nytimes.com/article_search_v2.json#/README).
 * [x] User can configure advanced search filters such as:
 	* [x] Begin Date (using a [date picker](https://guides.codepath.com/android/Using-DialogFragment#displaying-date-or-time-picker-dialogs))
-	* Sort order (oldest or newest) using a [spinner dropdown](https://guides.codepath.com/android/Working-with-Input-Views#spinners)
-	* News desk values (Arts, Fashion & Style, Sports) using [checkboxes](https://guides.codepath.com/android/Working-with-Input-Views#checkboxes)
+	* [x] Sort order (oldest or newest) using a [spinner dropdown](https://guides.codepath.com/android/Working-with-Input-Views#spinners)
+	* [x] News desk values (Arts, Fashion & Style, Sports) using [checkboxes](https://guides.codepath.com/android/Working-with-Input-Views#checkboxes)
 * [x] Subsequent searches will have any filters applied to the search results.
 * [x] User can tap on any article in results to view the contents in an embedded browser.
 * [x] User can [scroll down "infinitely"](https://guides.codepath.com/android/Endless-Scrolling-with-AdapterViews-and-RecyclerView) to continue loading more news articles. The maximum number of articles is limited by the API search.
