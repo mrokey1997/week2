@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Article</string>
+    <string name="app_name">WhatNews</string>
     <string name="arts">Arts</string>
     <string name="fashion_style"><![CDATA[Fashion & style]]></string>
     <string name="sports">Sports</string>

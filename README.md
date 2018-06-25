@@ -44,7 +44,11 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://i.imgur.com/WVnKQa1.gif' title='Video Walkthrough' width='' alt='Video Walkthrough'/>
+<img src='https://i.imgur.com/zarJOEw.gif' title='Filter' width='' alt='Filter'/>
+<img src='https://i.imgur.com/t0JvPkl.gif' title='Search' width='' alt='Search' />
+<img src='https://i.imgur.com/37lJsDC.gif' title='Article' width='' alt='Article'/>
+<img src='https://i.imgur.com/Cs3qe5A.gif' title='No Internet Connection' width='' alt='No internet connection'/>
 
 ## Notes
 
